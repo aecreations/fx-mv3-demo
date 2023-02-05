@@ -87,13 +87,13 @@ async function initCxtMenu(aPrefs)
     });
     browser.menus.create({
       id: "show-greeting",
-      title: "Say Hello",
+      title: "say hello",
       parentId: "cxt-submenu",
       contexts: ["page"],
     });
     browser.menus.create({
       id: "choose-greeting",
-      title: "Choose Greeting...",
+      title: "choose greeting...",
       parentId: "cxt-submenu",
       contexts: ["page"],
     });
