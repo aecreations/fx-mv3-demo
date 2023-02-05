@@ -1,0 +1,9 @@
+{
+  "extname": {
+    "message": "Hello MV3"
+  },
+
+  "extDesc": {
+    "message": "A demonstration Manifest V3 (MV3) WebExtension for Firefox."
+  }
+}

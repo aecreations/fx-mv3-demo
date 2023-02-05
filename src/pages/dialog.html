@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>choose greeting</title>
+    <link rel="stylesheet" href="./dialog.css">
+  </head>
+
+  <body>
+    <label>choose greeting:</label>
+    <select id="hello-msgs" multiple rows="8"></select>
+
+    <div class="dlg-btns">
+      <button id="btn-accept">ok</button>&nbsp;
+      <button id="btn-cancel">cancel</button>
+    </div>
+
+    <script src="../scripts/aePrefs.js"></script>
+    <script src="./dialog.js"></script>
+  </body>
+</html>

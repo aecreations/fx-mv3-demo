@@ -1,0 +1,69 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+body {
+    background-color: #ededf0;
+    font: caption;
+    font-size: 13px;
+}
+
+main {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    width: 640px;
+    margin: 24px auto 0 auto;
+    background-color: #fff;
+}
+
+h2 {
+    display: inline-block;
+    margin-top: 8px;
+    margin-right: 6px;
+    font-size: 28px;
+    font-weight: 200;
+    letter-spacing: -0.2px;
+}
+
+#pref-logo {
+    order: 1;
+    flex: 0 1 auto;
+    min-width: 180px;
+    margin-top: 24px;
+    text-align: center;
+}
+
+#pref-body {
+    order: 2;
+    flex: 1 1 auto;
+    border-left: 1px solid #ededf0;
+    padding: 16px 16px 16px 16px;
+    background-color: #fefefe;
+}
+
+#addon-icon {
+    width: 96px;
+    height: 96px;
+}
+
+#hdr-ext-name {
+    margin-top: 8px;
+    font-size: 17px;
+    font-weight: 600;
+    text-align: center;
+}
+
+#about-btn {
+    float: right;
+    height: unset;
+    font-size: 11px;
+}
+
+#display-mode-opt {
+    margin-top: 12px;
+    margin-bottom: 18px;
+}

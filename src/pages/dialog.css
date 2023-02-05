@@ -1,0 +1,29 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+body {
+    margin: 18px;
+    font: caption;
+    font-size: 13px;
+}
+
+label, select {
+    display: block;
+}
+
+button {
+    width: 80px;
+}
+
+#hello-msgs {
+    width: 100%;
+    margin-bottom: 18px;
+}
+
+.dlg-btns {
+    position: absolute;
+    bottom: 18px;
+    right: 18px;
+}
