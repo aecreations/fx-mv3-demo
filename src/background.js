@@ -135,7 +135,7 @@ async function openChooseHelloDlg()
       url: "pages/dialog.html",
       type: "detached_panel",
       width: 340,
-      height: 200,
+      height: 220,
     });
 
     aePrefs.setPrefs({dlgWndID: wnd.id});
