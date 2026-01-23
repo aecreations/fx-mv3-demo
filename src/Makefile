@@ -1,8 +1,8 @@
 # Makefile
 
-EXT_VER=`./getver.pl`
+EXT_VER=`./getver.py`
 DIST_FILE=hellomv3-$(EXT_VER).zip
-EXCLUDE=*~ *\.pl Makefile
+EXCLUDE=*~ *\.py Makefile
 
 
 $(DIST_FILE):
