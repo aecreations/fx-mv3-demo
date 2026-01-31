@@ -21,6 +21,11 @@ let gHelloMsgs = [
 let gIsInitialized = false;
 
 
+browser.runtime.onStartup.addListener(() => {
+  console.log("MV3 Demo: Browser startup.");
+});
+
+
 browser.runtime.onInstalled.addListener(async (aInstall) => {
   if (aInstall.reason == "install") {
     console.log("MV3 Demo: Extension installed.");
@@ -180,6 +185,33 @@ async function showGreeting()
   default:
     break;
   }
+}
+
+
+async function getBrowserHomepageOverride()
+{
+  // This will not indicate if the user has selected to open
+  // previous windows and tabs.
+  let homepgOverride = await browser.browserSettings.homepageOverride.get({});
+  console.log("MV3 Demo: Home page override: " + homepgOverride.value);
+}
+
+
+async function openGreetingWindow()
+{
+  let wnd = await browser.windows.getCurrent();
+
+  // Open an extension window with the same width and height, at the same
+  // window position.
+  await browser.windows.create({
+    url: "pages/greeting.html",
+    type: "popup",
+    focused: true,
+    width: wnd.width,
+    height: wnd.height,
+    left: wnd.left,
+    top: wnd.top,
+  });
 }
 
 
