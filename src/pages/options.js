@@ -6,10 +6,9 @@
 
 async function init()
 {
-  let bg = await browser.runtime.getBackgroundPage();
-
-  $("show-cxt-menu").checked = await bg.getPref("showCxtMenu");
-  let dispModeVal = await bg.getPref("displayMode");
+  let prefs = await aePrefs.getAllPrefs();
+  $("show-cxt-menu").checked = prefs.showCxtMenu;
+  let dispModeVal = prefs.displayMode;
   let dispModeOpts = $("display-mode").options;
 
   for (let opt of dispModeOpts) {
@@ -39,15 +38,13 @@ $("about-btn").addEventListener("click", aEvent => {
 });
 
 $("show-cxt-menu").addEventListener("click", async (aEvent) => {
-  let bg = await browser.runtime.getBackgroundPage();
-  bg.setPrefs({showCxtMenu: aEvent.target.checked});
+  aePrefs.setPrefs({showCxtMenu: aEvent.target.checked});
 });
 
 $("display-mode").addEventListener("change", async (aEvent) => {
-  let bg = await browser.runtime.getBackgroundPage();
   let select = aEvent.target;
   let displayMode = Number(select.options[select.selectedIndex].value);
-  bg.setPrefs({displayMode});
+  aePrefs.setPrefs({displayMode});
 });
 
 $("send-webext-msg").addEventListener("click", aEvent => {

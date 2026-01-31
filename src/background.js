@@ -215,19 +215,6 @@ async function openGreetingWindow()
 }
 
 
-async function getPref(aPrefKey)
-{
-  let rv = await aePrefs.getPref(aPrefKey);
-  return rv;
-}
-
-
-async function setPrefs(aPrefs)
-{
-  await aePrefs.setPrefs(aPrefs);
-}
-
-
 //
 // Event handlers
 //
