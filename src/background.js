@@ -21,8 +21,19 @@ let gHelloMsgs = [
 let gIsInitialized = false;
 
 
-browser.runtime.onStartup.addListener(() => {
+browser.runtime.onStartup.addListener(async () => {
   console.log("MV3 Demo: Browser startup.");
+
+  let extPerms = await browser.permissions.getAll();
+  if (extPerms.permissions.includes("tabs")) {
+    let [tab] = await browser.tabs.query({active: true, currentWindow: true});
+    if (tab) {
+      console.log(`MV3 Demo: URL of active browser tab at startup: ${tab.url}`);
+      if (tab.url == "about:home") {
+        console.log("Detected Firefox Home.");
+      }
+    }
+  }
 });
 
 
@@ -79,17 +90,6 @@ async function init(aPrefs)
   console.info(hello);
 
   gIsInitialized = true;
-
-  let extPerms = await browser.permissions.getAll();
-  if (extPerms.permissions.includes("tabs")) {
-    let [tab] = await browser.tabs.query({active: true, currentWindow: true});
-    if (tab) {
-      console.log(`MV3 Demo: Active browser tab URL at startup: ${tab.url}`);
-      if (tab.url == "about:home") {
-        console.log("MV3 Demo: Detected Firefox Home.");
-      }
-    }
-  }
 }
 
 
