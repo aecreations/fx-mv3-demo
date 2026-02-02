@@ -18,11 +18,14 @@
   },
 
   "permissions": [
-    "tabs",
-    "browserSettings",
     "menus",
     "notifications",
     "storage"
+  ],
+
+  "optional_permissions": [
+    "browserSettings",
+    "tabs"
   ],
   
   "background": {

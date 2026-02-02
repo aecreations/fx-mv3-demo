@@ -80,11 +80,14 @@ async function init(aPrefs)
 
   gIsInitialized = true;
 
-  let [tab] = await browser.tabs.query({active: true, currentWindow: true});
-  if (tab) {
-    console.log(`MV3 Demo: Active browser tab URL: ${tab.url}`);
-    if (tab.url == "about:home") {
-      console.log("MV3 Demo: Detected Firefox Home as the active browser tab.");
+  let extPerms = await browser.permissions.getAll();
+  if (extPerms.permissions.includes("tabs")) {
+    let [tab] = await browser.tabs.query({active: true, currentWindow: true});
+    if (tab) {
+      console.log(`MV3 Demo: Active browser tab URL at startup: ${tab.url}`);
+      if (tab.url == "about:home") {
+        console.log("MV3 Demo: Detected Firefox Home.");
+      }
     }
   }
 }
@@ -202,10 +205,16 @@ async function showGreeting()
 
 async function getBrowserHomepageOverride()
 {
-  // This will not indicate if the user has selected to open
-  // previous windows and tabs.
-  let homepgOverride = await browser.browserSettings.homepageOverride.get({});
-  console.log("MV3 Demo: Home page override: " + homepgOverride.value);
+  let extPerms = await browser.permissions.getAll();
+  if (extPerms.permissions.includes("browserSettings")) {
+    // This will not indicate if the user has selected to open
+    // previous windows and tabs.
+    let homepgOverride = await browser.browserSettings.homepageOverride.get({});
+    console.log("MV3 Demo: Home page override: " + homepgOverride.value);
+  }
+  else {
+    console.warn('To call this function, Hello MV3 needs to be granted the optional permission "browserSettings".');
+  }
 }
 
 
