@@ -79,6 +79,14 @@ async function init(aPrefs)
   console.info(hello);
 
   gIsInitialized = true;
+
+  let [tab] = await browser.tabs.query({active: true, currentWindow: true});
+  if (tab) {
+    console.log(`MV3 Demo: Active browser tab URL: ${tab.url}`);
+    if (tab.url == "about:home") {
+      console.log("MV3 Demo: Detected Firefox Home as the active browser tab.");
+    }
+  }
 }
 
 
@@ -187,6 +195,10 @@ async function showGreeting()
   }
 }
 
+
+//
+// Functions not invoked by extension UI
+//
 
 async function getBrowserHomepageOverride()
 {
