@@ -18,6 +18,7 @@
   },
 
   "permissions": [
+    "browserSettings",
     "menus",
     "notifications",
     "storage"
