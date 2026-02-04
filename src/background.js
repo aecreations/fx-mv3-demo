@@ -210,7 +210,7 @@ async function getBrowserHomepageOverride()
     // This will not indicate if the user has selected to open
     // previous windows and tabs.
     let homepgOverride = await browser.browserSettings.homepageOverride.get({});
-    console.log("MV3 Demo: Home page override: " + homepgOverride.value);
+    console.info("MV3 Demo: Home page override: " + homepgOverride.value);
   }
   else {
     console.warn('To call this function, Hello MV3 needs to be granted the optional permission "browserSettings".');
@@ -233,6 +233,56 @@ async function openGreetingWindow()
     left: wnd.left,
     top: wnd.top,
   });
+}
+
+
+async function setTabValueOfCurrentTab()
+{
+  function getTimestampAsHex()
+  {
+    let rv = Number(new Date()).toString(16);
+    return rv;
+  }
+
+  let extPerms = await browser.permissions.getAll();
+  let perms = new Set(extPerms.permissions);
+  if (!perms.has("sessions") || !perms.has("tabs")) {
+    console.warn('To call this function, Hello MV3 needs to be granted the optional permissions "sessions" and "tabs".');
+    return;
+  }
+
+  let [tab] = await browser.tabs.query({active: true, currentWindow: true});
+  let tabVal = `ae-${getTimestampAsHex()}`;
+  await browser.sessions.setTabValue(tab.id, "demo-tab-id", tabVal);
+  console.info(`MV3 Demo: Tab value "${tabVal}" set for tab ${tab.id}`);
+}
+
+
+async function getTabValueOfCurrentTab()
+{
+  let extPerms = await browser.permissions.getAll();
+  let perms = new Set(extPerms.permissions);
+  if (!perms.has("sessions") || !perms.has("tabs")) {
+    console.warn('To call this function, Hello MV3 needs to be granted the optional permissions "sessions" and "tabs".');
+    return;
+  }
+
+  let [tab] = await browser.tabs.query({active: true, currentWindow: true});
+  let tabVal;
+  try {
+    tabVal = await browser.sessions.getTabValue(tab.id, "demo-tab-id");
+  }
+  catch (e) {
+    console.error(e);
+    return
+  }
+
+  if (tabVal) {
+    console.info(`MV3 Demo: Tab value of tab ${tab.id}: "${tabVal}"`);
+  }
+  else {
+    console.warn(`MV3 Demo: No tab value set for tab ${tab.id}`);
+  }
 }
 
 

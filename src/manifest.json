@@ -28,6 +28,7 @@
 
   "optional_permissions": [
     "browserSettings",
+    "sessions",
     "tabs"
   ],
   
