@@ -10,6 +10,7 @@ async function init()
   let greetIdx = await aePrefs.getPref("helloIdx");
   let greeting = greetings[greetIdx];
 
+  document.title = greeting;
   document.getElementById("greeting").innerText = greeting;
 }
 
