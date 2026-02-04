@@ -203,21 +203,6 @@ async function showGreeting()
 // Functions not invoked by extension UI
 //
 
-async function getBrowserHomepageOverride()
-{
-  let extPerms = await browser.permissions.getAll();
-  if (extPerms.permissions.includes("browserSettings")) {
-    // This will not indicate if the user has selected to open
-    // previous windows and tabs.
-    let homepgOverride = await browser.browserSettings.homepageOverride.get({});
-    console.info("MV3 Demo: Home page override: " + homepgOverride.value);
-  }
-  else {
-    console.warn('To call this function, Hello MV3 needs to be granted the optional permission "browserSettings".');
-  }
-}
-
-
 async function openGreetingWindow()
 {
   let wnd = await browser.windows.getCurrent();
@@ -236,6 +221,23 @@ async function openGreetingWindow()
 }
 
 
+// Requires Firefox 57+, N/A Chromium and Safari
+async function getBrowserHomepageOverride()
+{
+  let extPerms = await browser.permissions.getAll();
+  if (extPerms.permissions.includes("browserSettings")) {
+    // This will not indicate if the user has selected to open
+    // previous windows and tabs.
+    let homepgOverride = await browser.browserSettings.homepageOverride.get({});
+    console.info("MV3 Demo: Home page override: " + homepgOverride.value);
+  }
+  else {
+    console.warn('To call this function, Hello MV3 needs to be granted the optional permission "browserSettings".');
+  }
+}
+
+
+// Requires Firefox 57+, N/A Chromium and Safari
 async function setTabValueOfCurrentTab()
 {
   function getTimestampAsHex()
@@ -258,6 +260,7 @@ async function setTabValueOfCurrentTab()
 }
 
 
+// Requires Firefox 57+, N/A Chromium and Safari
 async function getTabValueOfCurrentTab()
 {
   let extPerms = await browser.permissions.getAll();
