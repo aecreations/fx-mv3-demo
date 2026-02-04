@@ -225,7 +225,7 @@ async function openGreetingWindow()
   // Open an extension window with the same width and height, at the same
   // window position.
   await browser.windows.create({
-    url: "pages/greeting.html",
+    url: "pages/window.html",
     type: "popup",
     focused: true,
     width: wnd.width,
