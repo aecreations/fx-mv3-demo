@@ -296,19 +296,23 @@ async function getTabValueOfCurrentTab()
 browser.runtime.onMessage.addListener(aMessage => {
   console.log(`MV3 Demo: Background script received extension message "${aMessage.id}"`);
 
-  if (aMessage.id == "get-greeting") {
-    return getHelloIndex();
+  switch (aMessage.id) {
+    case "get-greeting":
+      return getHelloIndex();
+
+    case "set-greeting":
+      return aePrefs.setPrefs({helloIdx: Number(aMessage.index)});
+
+    case "get-all-greetings":
+      return Promise.resolve(getAllHelloMessages());
+
+    case "webext-global-msg":
+      console.info("MV3 Demo: Background script has received message from extension preferences page.");
+      break;
+
+    default:
+      break;
   }
-  else if (aMessage.id == "set-greeting") {
-    let newIdx = Number(aMessage.index);
-    return aePrefs.setPrefs({helloIdx: newIdx});
-  }
-  else if (aMessage.id == "get-all-greetings") {
-    return Promise.resolve(getAllHelloMessages());
-  }
-  else if (aMessage.id == "webext-global-msg") {
-    console.info("MV3 Demo: Background script has received message from extension preferences page.");
-  }    
 });
 
 
