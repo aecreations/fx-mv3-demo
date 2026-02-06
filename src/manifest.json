@@ -50,5 +50,14 @@
     "browser_style": true
   },
 
+  "commands": {
+    "open-hello-window": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F1"
+      },
+      "description": "__MSG_openWindowCmd__"
+    }
+  },
+
   "default_locale": "en"
 }

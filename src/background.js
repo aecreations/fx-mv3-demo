@@ -199,10 +199,6 @@ async function showGreeting()
 }
 
 
-//
-// Functions not invoked by extension UI
-//
-
 async function openGreetingWindow()
 {
   let wnd = await browser.windows.getCurrent();
@@ -220,6 +216,10 @@ async function openGreetingWindow()
   });
 }
 
+
+//
+// Functions not invoked by extension UI
+//
 
 // Requires Firefox 57+, N/A Chromium and Safari
 async function getBrowserHomepageOverride()
@@ -332,6 +332,12 @@ browser.menus.onClicked.addListener((aInfo, aTab) => {
 
   default:
     break;
+  }
+});
+
+browser.commands.onCommand.addListener(aName => {
+  if (aName === "open-hello-window") {
+    openGreetingWindow();
   }
 });
 
