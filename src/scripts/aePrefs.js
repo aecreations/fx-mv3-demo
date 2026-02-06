@@ -43,8 +43,7 @@ let aePrefs = {
 
   hasUserPrefs(aPrefs)
   {
-    let rv = Object.hasOwn(aPrefs, "helloIdx");
-    return rv;
+    return "helloIdx" in aPrefs;
   },
 
   async setUserPrefs(aPrefs) {
