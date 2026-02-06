@@ -17,6 +17,10 @@ async function init()
       break;
     }
   }
+
+  // User's name is stored in synced prefs.
+  let syncedPrefs = await aeSyncedPrefs.getAllPrefs();
+  $("user-name").value = syncedPrefs.usrName;
 }
 
 
@@ -45,6 +49,14 @@ $("display-mode").addEventListener("change", async (aEvent) => {
   let select = aEvent.target;
   let displayMode = Number(select.options[select.selectedIndex].value);
   aePrefs.setPrefs({displayMode});
+});
+
+$("user-name").addEventListener("blur", async (aEvent) => {
+  let usrName = aEvent.target.value;
+  if (usrName.trim().length == 0) {  // Prevent empty user name
+    aEvent.target.value = usrName = browser.i18n.getMessage("defUsrName");
+  }
+  await aeSyncedPrefs.setPrefs({usrName});
 });
 
 $("send-webext-msg").addEventListener("click", aEvent => {

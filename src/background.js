@@ -66,6 +66,22 @@ void async function ()
     await aePrefs.setUserPrefs(prefs);
   }
 
+  let syncedPrefs = await aeSyncedPrefs.getAllPrefs();
+  if (!aeSyncedPrefs.hasSyncedPrefs(syncedPrefs)) {
+    console.log("MV3 Demo: Initializing synced preferences.  Turn on Firefox Sync and select option to sync add-ons.");
+    await aeSyncedPrefs.setSyncedUserPrefs(syncedPrefs);
+
+    // Set values of synced prefs.
+    let greetings = [...gHelloMsgs];
+    let usrName = browser.i18n.getMessage("defUsrName");
+    syncedPrefs = {
+      usrName,
+      greetings,
+    };
+
+    await aeSyncedPrefs.setPrefs(syncedPrefs);
+  }
+
   init(prefs);
 }();
 
@@ -85,9 +101,8 @@ async function init(aPrefs)
 
   initCxtMenu(aPrefs);
   
-  let idx = Number(aPrefs.helloIdx);
-  let hello = gHelloMsgs[idx];
-  console.info(hello);
+  let usrName = await aeSyncedPrefs.getPref("usrName");
+  console.info(`Hello ${usrName}`);
 
   gIsInitialized = true;
 }
@@ -220,6 +235,20 @@ async function openGreetingWindow()
 //
 // Functions not invoked by extension UI
 //
+
+async function dumpSyncedPrefs(aIsVerbose=false)
+{
+  let syncedPrefs = await aeSyncedPrefs.getAllPrefs();
+  let syncedStorageUsedKB = await aeSyncedPrefs.getStorageInUseKB();
+  console.info("MV3 Demo: Synced user prefs:", syncedPrefs);
+  console.info(`Synced storage in use: ${syncedStorageUsedKB.toFixed(2)} KiB`);
+
+  if (aIsVerbose) {
+    console.log(`MV3 Demo: Maximum total size of synced storage: 100 KiB; maximum size of each item in synced storage: 8 KiB
+See https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/storage/sync#storage_quotas_for_sync_data`);
+  }
+}
+
 
 // Requires Firefox 57+, N/A Chromium and Safari
 async function getBrowserHomepageOverride()

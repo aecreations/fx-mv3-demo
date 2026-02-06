@@ -35,6 +35,7 @@
   "background": {
     "scripts": [
       "scripts/aePrefs.js",
+      "scripts/aeSyncedPrefs.js",
       "background.js"
     ]
   },

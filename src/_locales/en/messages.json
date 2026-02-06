@@ -9,5 +9,9 @@
 
   "openWindowCmd": {
     "message": "Open greeting window"
+  },
+
+  "defUsrName": {
+    "message": "Demo User"
   }
 }
