@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const DISPLAY_NONE = 0;
 const DISPLAY_CONSOLE = 1;
 const DISPLAY_NOTIFCN = 2;
 
@@ -365,7 +364,7 @@ browser.menus.onClicked.addListener((aInfo, aTab) => {
 });
 
 browser.commands.onCommand.addListener(aName => {
-  if (aName === "open-hello-window") {
+  if (aName == "open-hello-window") {
     openGreetingWindow();
   }
 });
