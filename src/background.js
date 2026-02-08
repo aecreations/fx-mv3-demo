@@ -77,7 +77,8 @@ void async function ()
       usrName,
       greetings,
     };
-
+    console.log(`MV3 Demo: Initializing synced data:`);
+    console.log(syncedPrefs);
     await aeSyncedPrefs.setPrefs(syncedPrefs);
   }
 
