@@ -164,7 +164,7 @@ async function openChooseHelloDlg()
   {
     let wnd = await browser.windows.create({
       url: "pages/dialog.html",
-      type: "detached_panel",
+      type: "popup",  // N.B.: Only use 'normal' or 'popup' as the window type.
       width: 340,
       height: 220,
     });
