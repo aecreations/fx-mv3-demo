@@ -214,21 +214,77 @@ async function showGreeting()
 }
 
 
-async function openGreetingWindow()
+async function openGreetingWindow(aTab, aRunInjectedScript=false)
 {
   let wnd = await browser.windows.getCurrent();
 
+  if (aRunInjectedScript) {
+    let injectRes;
+    try {
+      injectRes = await browser.scripting.executeScript({
+        target: {
+          tabId: aTab.id
+        },
+        func: () => {
+          // FYI: Window geometry from HTML DOM API is the same as reported by
+          // the WebExtension API.
+          return {
+            x: window.screenX,
+            y: window.screenY,
+            w: window.outerWidth,
+            h: window.outerHeight,
+          };
+        }
+      });
+
+      console.log("MV3 Demo: Result of injected script execution: ", injectRes);
+      let clientWndGeom = injectRes[0].result;
+      console.info(`MV3 Demo: Current window geometry of tab ${aTab.id} from HTML DOM Window API:\nx = ${clientWndGeom.x}, y = ${clientWndGeom.y}, w = ${clientWndGeom.w}, h = ${clientWndGeom.h}`);
+    } catch (e) {
+      // Error occurs if current tab is restricted, e.g. a Firefox page
+      // (Add-ons Manager, Firefox Settings, etc.) or the AMO website.
+      console.error(`MV3 Demo: Failed to execute script injected into tab ${aTab.id}: ${e}`);
+    }
+  }
+
+  console.info(`MV3 Demo: Current window geometry from WebExtension API:\nx = ${wnd.left}, y = ${wnd.top}, w = ${wnd.width}, h = ${wnd.height}
+Window type: ${wnd.type}`);
+
+  // Workaround to Windows bug where top and left are negative if the browser
+  // window is maximized.
+  // This will resize the popup so that it doesn't completely cover the
+  // browser window.
+  // !! BUG: This workaround doesn't work if the browser window is full screen
+  // on Windows; window top is reported as -48 pixels!
+  // Could the absolute value be the pixel height of the Windows taskbar?
+  // What if the taskbar is hidden or placed on a different side of the screen?
+  let left = wnd.left, top = wnd.top;
+  let width = wnd.width;
+  let height = wnd.height;
+  if (wnd.left < 0) {
+    // Optimal window geometry to ensure the maximized popup is fully visible.
+    left = 10;
+    top = 10;
+    width = wnd.width - 16;
+    height = wnd.height - 16;
+  }
+
   // Open an extension window with the same width and height, at the same
   // window position.
-  await browser.windows.create({
+  let greetWnd = await browser.windows.create({
     url: "pages/window.html",
-    type: "popup",
+    type: "popup",  // N.B.: Only use 'normal' or 'popup' as the window type.
     focused: true,
-    width: wnd.width,
-    height: wnd.height,
-    left: wnd.left,
-    top: wnd.top,
+    width, height,
+    left, top,
   });
+
+  // Workaround to bug where popup window isn't sized correctly if the browser
+  // window is maximized. Known to occur on macOS.
+  await browser.windows.update(greetWnd.id, {width, height, left, top});
+
+  let greetWndInf = await browser.windows.get(greetWnd.id);
+  console.log("MV3 Demo: Popup window info:", greetWndInf)
 }
 
 
@@ -364,9 +420,9 @@ browser.menus.onClicked.addListener((aInfo, aTab) => {
   }
 });
 
-browser.commands.onCommand.addListener(aName => {
+browser.commands.onCommand.addListener((aName, aTab) => {
   if (aName == "open-hello-window") {
-    openGreetingWindow();
+    openGreetingWindow(aTab);
   }
 });
 
