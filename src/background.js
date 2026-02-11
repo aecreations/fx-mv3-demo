@@ -261,12 +261,14 @@ async function openGreetingWindow()
 {
   let wnd = await browser.windows.getCurrent();
   console.info(`MV3 Demo: Current window geometry from WebExtension API:\nx = ${wnd.left}, y = ${wnd.top}, w = ${wnd.width}, h = ${wnd.height}
-Window type: ${wnd.type}`);
+Window state: ${wnd.state}`);
 
-  // Workaround to Windows bug where top and left are negative if the browser
-  // window is maximized.
-  // This will resize the popup so that it doesn't completely cover the
-  // browser window.
+  // Workaround to Windows bug where if the WebExtension popup window is
+  // maximized, its height vertically extends under the Windows taskbar;
+  // see <https://bugzilla.mozilla.org/show_bug.cgi?id=2016018>.
+  // This will resize the popup so that its entire contents are visible,
+  // although it doesn't completely cover the browser window due to another
+  // Windows-specific window geometry bug.
   // !! BUG: This workaround doesn't work if the browser window is full screen
   // on Windows; window top is reported as -48 pixels!
   // Could the absolute value be the pixel height of the Windows taskbar?
@@ -274,6 +276,9 @@ Window type: ${wnd.type}`);
   let left = wnd.left, top = wnd.top;
   let width = wnd.width;
   let height = wnd.height;
+
+  // On Windows, the browser window (x, y) coordinates will be negative
+  // if maximized.
   if (wnd.left < 0) {
     // Optimal window geometry to ensure the maximized popup is fully visible.
     left = 10;
