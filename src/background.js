@@ -257,39 +257,9 @@ async function showGreeting(aTab)
 }
 
 
-async function openGreetingWindow(aTab, aRunInjectedScript=false)
+async function openGreetingWindow()
 {
   let wnd = await browser.windows.getCurrent();
-
-  if (aRunInjectedScript) {
-    let injectRes;
-    try {
-      injectRes = await browser.scripting.executeScript({
-        target: {
-          tabId: aTab.id
-        },
-        func: () => {
-          // FYI: Window geometry from HTML DOM API is the same as reported by
-          // the WebExtension API.
-          return {
-            x: window.screenX,
-            y: window.screenY,
-            w: window.outerWidth,
-            h: window.outerHeight,
-          };
-        }
-      });
-
-      console.log("MV3 Demo: Result of injected script execution: ", injectRes);
-      let clientWndGeom = injectRes[0].result;
-      console.info(`MV3 Demo: Current window geometry of tab ${aTab.id} from HTML DOM Window API:\nx = ${clientWndGeom.x}, y = ${clientWndGeom.y}, w = ${clientWndGeom.w}, h = ${clientWndGeom.h}`);
-    } catch (e) {
-      // Error occurs if current tab is restricted, e.g. a Firefox page
-      // (Add-ons Manager, Firefox Settings, etc.) or the AMO website.
-      console.error(`MV3 Demo: Failed to execute script injected into tab ${aTab.id}: ${e}`);
-    }
-  }
-
   console.info(`MV3 Demo: Current window geometry from WebExtension API:\nx = ${wnd.left}, y = ${wnd.top}, w = ${wnd.width}, h = ${wnd.height}
 Window type: ${wnd.type}`);
 
@@ -465,7 +435,7 @@ browser.menus.onClicked.addListener((aInfo, aTab) => {
 
 browser.commands.onCommand.addListener((aName, aTab) => {
   if (aName == "open-hello-window") {
-    openGreetingWindow(aTab);
+    openGreetingWindow();
   }
 });
 
