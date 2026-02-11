@@ -5,6 +5,7 @@
 
 const DISPLAY_CONSOLE = 1;
 const DISPLAY_NOTIFCN = 2;
+const DISPLAY_DIALOG = 3;
 
 let gHelloMsgs = [
   "Hello world",
@@ -190,7 +191,7 @@ async function openChooseHelloDlg()
 }
 
 
-async function showGreeting()
+async function showGreeting(aTab)
 {
   let prefs = await aePrefs.getAllPrefs();
   let hello = getHelloMsg(prefs.helloIdx);
@@ -206,6 +207,48 @@ async function showGreeting()
       title: browser.i18n.getMessage("extName"),
       message: hello,
     });
+    break;
+
+  case DISPLAY_DIALOG:
+    try {
+      await browser.scripting.executeScript({
+        target: {
+          tabId: aTab.id,
+        },
+        args: [hello],
+        func: (aHelloMsg) => {
+          let dlg = document.getElementById("ae-mv3-demo-dlg");
+          if (!dlg) {
+            dlg = document.createElement("dialog");
+            dlg.id = "ae-mv3-demo-dlg";
+            let dlgHdg = document.createElement("p");
+            dlgHdg.id = "ae-mv3-demo-dlg-hdg";
+            dlgHdg.append("Hello MV3");
+            let dlgBody = document.createElement("p");
+            dlgBody.id = "ae-mv3-demo-dlg-body";
+            let dlgBtn = document.createElement("button");
+            dlgBtn.id = "ae-mv3-demo-dlg-btn-accept";
+            dlgBtn.append("ok");
+            dlgBtn.addEventListener("click", () => {
+              dlg.close();
+            });
+
+            dlg.appendChild(dlgHdg);
+            dlg.appendChild(dlgBody);
+            dlg.appendChild(dlgBtn);
+            document.body.appendChild(dlg);
+          }
+
+          document.getElementById("ae-mv3-demo-dlg-body").textContent = aHelloMsg;
+          dlg.showModal();
+        }
+      });
+    }
+    catch (e) {
+      // Error occurs if current tab is restricted, e.g. a Firefox page
+      // (Add-ons Manager, Firefox Settings, etc.) or the AMO website.
+      console.error(`MV3 Demo: Failed to execute script injected into tab ${aTab.id}: ${e}`);
+    }
     break;
 
   default:
@@ -401,14 +444,14 @@ browser.runtime.onMessage.addListener(aMessage => {
 });
 
 
-browser.action.onClicked.addListener(() => {
-  showGreeting();
+browser.action.onClicked.addListener(aTab => {
+  showGreeting(aTab);
 });
 
 browser.menus.onClicked.addListener((aInfo, aTab) => {
   switch (aInfo.menuItemId) {
   case "show-greeting":
-    showGreeting();
+    showGreeting(aTab);
     break;
     
   case "choose-greeting":

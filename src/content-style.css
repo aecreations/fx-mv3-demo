@@ -1,0 +1,83 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/*
+ * Adapted from "Create a Lightbox effect only with CSS"
+ * URL: <http://www.emanueleferonato.com/2007/08/22/create-a-lightbox-effect-
+ * only-with-css-no-javascript-needed/>
+ */
+
+:root {
+    --color-ovl-bkgd: black;
+    --opacity-ovl-bkgd: 0.5;
+    --color-lb-bkgd: #fefefe;
+    --color-lb-shadow: #303030cc;
+
+    --default-width: 480px;
+    --default-height: 140px;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-ovl-bkgd: black;
+        --opacity-ovl-bkgd: 0.85;
+        --color-lb-bkgd: #38383d;
+        --color-lb-shadow: #0c0c0d;
+    }
+}
+
+::backdrop {
+    background-color: var(--color-ovl-bkgd) !important;
+    opacity: var(--opacity-ovl-bkgd) !important;
+}
+
+#ae-mv3-demo-dlg {
+    box-sizing: border-box !important;
+    width: var(--default-width) !important;
+    height: var(--default-height) !important;
+
+    padding: 16px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    box-shadow: 0px 2px 8px 1px var(--color-lb-shadow) !important;
+
+    font: caption !important;
+    font-size: 13px !important;
+    text-align: left !important;
+    color: black !important;
+    background-color: var(--color-lb-bkgd) !important;
+}
+
+#ae-mv3-demo-dlg p {
+    font: caption !important;
+    font-size: 13px !important;
+    font-weight: normal !important;
+}
+
+p#ae-mv3-demo-dlg-hdg {
+    margin-top: 0 !important;
+    margin-bottom: 16px !important;
+    font-weight: bold !important;
+}
+
+p#ae-mv3-demo-dlg-body {
+    margin-top: 18px !important;
+    margin-bottom: 30px !important;
+}
+
+button#ae-mv3-demo-dlg-btn-accept {
+    min-width: 96px !important;
+    min-height: 28px !important;
+
+    background-color: #0996f8 !important;
+    border: 1px solid #0670cc !important;
+    border-radius: 4px !important;
+
+    font-size: 13px !important;
+    font-variant: initial !important;
+    color: #fff !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    cursor: default !important;
+}
