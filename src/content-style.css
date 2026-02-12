@@ -32,6 +32,7 @@
     opacity: var(--opacity-ovl-bkgd) !important;
 }
 
+/* WARNING!! Style rules below may be overridden by page styling. */
 #ae-mv3-demo-dlg {
     box-sizing: border-box !important;
     width: var(--default-width) !important;
