@@ -1,5 +1,5 @@
 # Hello MV3
-A demo Manifest V3 (MV3) browser extension for Firefox.
+### A demo Manifest V3 (MV3) browser extension for Firefox.
 
 This example extension demonstrates how to:
 
